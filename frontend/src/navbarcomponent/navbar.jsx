@@ -1,16 +1,28 @@
-import { NavLink } from 'react-router-dom';
-import './navbar.css'
+import { NavLink} from 'react-router-dom';
+import './navbar.css';
 
 const Navbar = () => {
+
+
+    // Get logged-in role
+    const role = localStorage.getItem("role");
+
+    // Decide dashboard path
+    const dashboardPath =
+        role === "student" ? "/student-dashboard"
+        : role === "teacher" ? "/teacher-dashboard"
+        : "/home";
+
     return (
         <nav className="container">
             <div className='top-header'>
-                <h1>Fox University</h1>
+                <h1>University Management System</h1>
             </div>
 
             <div className='nav-bar'>
+                {/* Home */}
                 <NavLink 
-                    to='/home' 
+                    to='/home'
                     style={({ isActive }) => ({
                         color: isActive ? '#ff6b35' : '#ffffff',
                         borderBottom: isActive ? '3px solid #ff6b35' : 'none',
@@ -19,8 +31,10 @@ const Navbar = () => {
                 >
                     Home
                 </NavLink>
-                <NavLink 
-                    to='/curriculum'
+
+                {/* Dashboard (dynamic route) */}
+                <NavLink
+                    to={dashboardPath}
                     style={({ isActive }) => ({
                         color: isActive ? '#ff6b35' : '#ffffff',
                         borderBottom: isActive ? '3px solid #ff6b35' : 'none',
@@ -28,7 +42,9 @@ const Navbar = () => {
                     })}
                 >
                     Dashboard
-                </NavLink> 
+                </NavLink>
+
+                {/* Staff */}
                 <NavLink 
                     to='/staff'
                     style={({ isActive }) => ({
@@ -39,7 +55,9 @@ const Navbar = () => {
                 >
                     Staff
                 </NavLink>
-                  <NavLink 
+
+                {/* Community */}
+                <NavLink 
                     to='/community'
                     style={({ isActive }) => ({
                         color: isActive ? '#ff6b35' : '#ffffff',
@@ -50,7 +68,6 @@ const Navbar = () => {
                     Community
                 </NavLink>
             </div>
-       
         </nav>
     );
 };

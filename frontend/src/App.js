@@ -1,12 +1,13 @@
-import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './navbarcomponent/navbar';
 import Login from './loginpagecomponent/loginpages';
 import HomePage from './homepagecomponent/homepage';
+import StudentDashboard from './Dashboardcomponent/studentdashboard';
+import TeacherDashboard from './Dashboardcomponent/teacherdashboard';
+import CatalogCard from './coursescomponent/coursecatalog';
 
 function App() {
   const location = useLocation();
-
-  // Show Navbar on all pages except login
   const showNavbar = location.pathname !== "/";
 
   return (
@@ -14,17 +15,16 @@ function App() {
       {showNavbar && <Navbar />}
 
       <Routes>
-        {/* Public Pages */}
         <Route path="/" element={<Login />} />
-
-        {/* Home page for all roles */}
         <Route path="/home" element={<HomePage />} />
+
+        {/* Dashboards */}
+        <Route path="/student-dashboard" element={<StudentDashboard />} />
+        <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+        <Route path='/student-dashboard/addcourse' element ={<CatalogCard/>}/>
       </Routes>
     </div>
   );
 }
 
 export default App;
-
-
-

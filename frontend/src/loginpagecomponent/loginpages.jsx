@@ -7,7 +7,7 @@ const LoginSignUp = () => {
   const [role, setRole] = useState("teacher");
   const [isSignUp, setIsSignUp] = useState(false);
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState(""); // only for signup
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRoleChange = (selectedRole) => {
@@ -34,11 +34,14 @@ const LoginSignUp = () => {
 
       const data = await res.json();
       alert(data.message);
+if (!isSignUp && res.ok) {
+    // Save user role for dashboard routing
+    localStorage.setItem("role", role);
 
-      if (!isSignUp && res.ok) {
-        // Redirect all roles to the same home page
-        navigate("/home");
-      }
+    // Redirect ALL users to home page
+    navigate("/home");
+}
+
     } catch (err) {
       console.error(err);
       alert("Server error");
@@ -73,7 +76,7 @@ const LoginSignUp = () => {
           </button>
         </div>
 
-        {/* Login / Sign Up Form */}
+        {/* Form */}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -82,6 +85,7 @@ const LoginSignUp = () => {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
+
           {isSignUp && (
             <input
               type="email"
@@ -91,6 +95,7 @@ const LoginSignUp = () => {
               required
             />
           )}
+
           <input
             type="password"
             placeholder="Password"
@@ -98,12 +103,13 @@ const LoginSignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
           <button type="submit" className="applybutton">
             {isSignUp ? "Sign Up" : "Login"}
           </button>
         </form>
 
-        {/* Toggle Login / Sign Up */}
+        {/* Toggle */}
         <p className="toggle-text">
           {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
           <span className="toggle-link" onClick={() => setIsSignUp(!isSignUp)}>

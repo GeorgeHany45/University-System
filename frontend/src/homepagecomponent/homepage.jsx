@@ -6,8 +6,9 @@ const Homepage = () => {
             {/* Hero Section */}
             <div className="imagepart">
                 <img src="/homepage.png" alt="University Campus" />
-                <h1>Fox University School Education</h1>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia</p>
+                <h1>University Management System</h1>
+                <p>Welcome to our <strong>University Management System</strong><br></br>
+    Shaping minds, inspiring growth, and preparing leaders for tomorrow.</p>
                 <div className='button'>
                    <button>Contact Us</button> 
                 </div>
