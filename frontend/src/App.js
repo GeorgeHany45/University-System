@@ -5,6 +5,7 @@ import HomePage from './homepagecomponent/homepage';
 import StudentDashboard from './Dashboardcomponent/studentdashboard';
 import TeacherDashboard from './Dashboardcomponent/teacherdashboard';
 import CatalogCard from './coursescomponent/coursecatalog';
+import Notfound from './notFound';
 
 function App() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function App() {
         <Route path="/student-dashboard" element={<StudentDashboard />} />
         <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
         <Route path='/student-dashboard/addcourse' element ={<CatalogCard/>}/>
+        <Route path='*' element={<Notfound/>} />
       </Routes>
     </div>
   );
