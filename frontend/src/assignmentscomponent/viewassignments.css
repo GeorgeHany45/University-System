@@ -1,0 +1,272 @@
+.view-assignments-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.assignments-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.assignments-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Filter Section */
+.filter-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  color: #555;
+  font-size: 0.95rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.filter-btn:hover {
+  border-color: #3498db;
+  background: #f0f7ff;
+  color: #3498db;
+}
+
+.filter-btn.active {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+/* Assignments List */
+.assignments-list {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+@media (max-width: 768px) {
+  .assignments-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Assignment Card */
+.assignment-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 5px solid #3498db;
+}
+
+.assignment-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+.assignment-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  gap: 12px;
+}
+
+.assignment-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  flex: 1;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badge-overdue {
+  background: #e74c3c;
+  color: white;
+}
+
+.badge-due-soon {
+  background: #f39c12;
+  color: white;
+}
+
+.badge-pending {
+  background: #3498db;
+  color: white;
+}
+
+/* Assignment Meta */
+.assignment-meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.course-badge {
+  background: #e8f4f8;
+  color: #16a085;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.due-date {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.due-date i {
+  color: #3498db;
+}
+
+/* Assignment Description */
+.assignment-description {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 15px 0;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 3px solid #3498db;
+}
+
+/* Assignment Footer */
+.assignment-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn-submit,
+.btn-details {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-submit {
+  background: #27ae60;
+  color: white;
+}
+
+.btn-submit:hover {
+  background: #229954;
+  transform: scale(1.02);
+}
+
+.btn-details {
+  background: #ecf0f1;
+  color: #333;
+  border: 2px solid #bdc3c7;
+}
+
+.btn-details:hover {
+  background: #bdc3c7;
+  color: white;
+}
+
+/* No Assignments */
+.no-assignments {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.no-assignments i {
+  font-size: 3rem;
+  color: #bdc3c7;
+  margin-bottom: 20px;
+}
+
+.no-assignments p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .view-assignments-container {
+    padding: 15px;
+  }
+
+  .assignments-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .filter-section {
+    gap: 8px;
+  }
+
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .assignment-card {
+    padding: 16px;
+  }
+
+  .assignment-title {
+    font-size: 1.1rem;
+  }
+
+  .assignment-footer {
+    flex-direction: column;
+  }
+}

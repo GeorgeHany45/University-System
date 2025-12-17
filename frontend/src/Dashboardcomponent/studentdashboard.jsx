@@ -14,6 +14,10 @@ const StudentDashboard = () => {
     const handleAddCourse = () => {
         navigate('/student-dashboard/addcourse')
     }
+
+    const handleViewAssignments = () => {
+        navigate('/student-dashboard/assignments')
+    }
     
   return (
     <div className="dashboard-container">
@@ -42,6 +46,7 @@ const StudentDashboard = () => {
           title="Assignments"
           description="Check and submit your assignments."
           buttonText="View Now"
+          onClick={handleViewAssignments}
         />
 
         <DashboardCard

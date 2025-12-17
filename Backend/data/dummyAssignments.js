@@ -1,0 +1,58 @@
+const dummyAssignments = [
+  {
+    id: 1,
+    title: "Introduction to React",
+    description: "Create a simple React component that displays a list of items.",
+    dueDate: new Date(2025, 11, 25),
+    courseId: 1,
+    teacherId: 1,
+    createdAt: new Date(),
+  },
+  {
+    id: 2,
+    title: "JavaScript Fundamentals Quiz",
+    description: "Complete a 20-question quiz on JavaScript basics.",
+    dueDate: new Date(2025, 11, 22),
+    courseId: 1,
+    teacherId: 1,
+    createdAt: new Date(),
+  },
+  {
+    id: 3,
+    title: "Database Design Project",
+    description: "Design and implement a relational database for a small business.",
+    dueDate: new Date(2025, 11, 28),
+    courseId: 2,
+    teacherId: 2,
+    createdAt: new Date(),
+  },
+  {
+    id: 4,
+    title: "API Development",
+    description: "Build a REST API with Node.js and Express.",
+    dueDate: new Date(2025, 11, 20),
+    courseId: 2,
+    teacherId: 2,
+    createdAt: new Date(),
+  },
+  {
+    id: 5,
+    title: "Web Security Best Practices",
+    description: "Write a report on web security vulnerabilities and prevention methods.",
+    dueDate: new Date(2025, 12, 5),
+    courseId: 3,
+    teacherId: 3,
+    createdAt: new Date(),
+  },
+  {
+    id: 6,
+    title: "Frontend Performance Optimization",
+    description: "Optimize a given website for better performance and user experience.",
+    dueDate: new Date(2025, 12, 10),
+    courseId: 3,
+    teacherId: 3,
+    createdAt: new Date(),
+  },
+];
+
+module.exports = dummyAssignments;
