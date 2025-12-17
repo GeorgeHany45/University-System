@@ -1,4 +1,4 @@
-import { NavLink} from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './navbar.css';
 
 const Navbar = () => {
@@ -11,6 +11,7 @@ const Navbar = () => {
     const dashboardPath =
         role === "student" ? "/student-dashboard"
         : role === "teacher" ? "/teacher-dashboard"
+        : role === "admin" ? "/admin-dashboard"
         : "/home";
 
     return (
@@ -67,6 +68,30 @@ const Navbar = () => {
                 >
                     Community
                 </NavLink>
+                
+                {/* Logout button */}
+                <button
+                    onClick={() => {
+                        // Clear stored user info and redirect to login
+                        localStorage.removeItem("userId");
+                        localStorage.removeItem("role");
+                        localStorage.removeItem("username");
+                        // use window.location to ensure full reset
+                        window.location.href = "/";
+                    }}
+                    className="logout-btn"
+                    style={{
+                        marginLeft: '16px',
+                        background: 'transparent',
+                        border: '1px solid #ffffff',
+                        color: '#ffffff',
+                        padding: '6px 10px',
+                        borderRadius: '6px',
+                        cursor: 'pointer'
+                    }}
+                >
+                    Logout
+                </button>
             </div>
         </nav>
     );

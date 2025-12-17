@@ -5,6 +5,8 @@ import HomePage from './homepagecomponent/homepage';
 import StudentDashboard from './Dashboardcomponent/studentdashboard';
 import TeacherDashboard from './Dashboardcomponent/teacherdashboard';
 import CatalogCard from './coursescomponent/coursecatalog';
+import MyCourses from './Dashboardcomponent/mycourses';
+import AdminDashboard from './Dashboardcomponent/admindashboard';
 import Notfound from './notFound';
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
         <Route path="/student-dashboard" element={<StudentDashboard />} />
         <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
         <Route path='/student-dashboard/addcourse' element ={<CatalogCard/>}/>
+        <Route path='/student-dashboard/mycourses' element ={<MyCourses/>}/>
+        <Route path='/admin-dashboard' element ={<AdminDashboard/>}/>
         <Route path='*' element={<Notfound/>} />
       </Routes>
     </div>

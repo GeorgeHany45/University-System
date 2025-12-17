@@ -34,13 +34,18 @@ const LoginSignUp = () => {
 
       const data = await res.json();
       alert(data.message);
-if (!isSignUp && res.ok) {
-    // Save user role for dashboard routing
-    localStorage.setItem("role", role);
+      
+      if (res.ok && data.userId) {
+        // Save user info for later use
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("role", data.role);
+        if (data.username) {
+          localStorage.setItem("username", data.username);
+        }
 
-    // Redirect ALL users to home page
-    navigate("/home");
-}
+        // Redirect ALL users to home page
+        navigate("/home");
+      }
 
     } catch (err) {
       console.error(err);

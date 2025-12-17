@@ -78,3 +78,54 @@
 .dash-btn:hover {
   background: #e55a28;
 }
+
+/* Admin form styles */
+.admin-card {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+  padding: 22px;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  border-top: 6px solid #ff6b35;
+}
+
+.admin-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 30px;
+  align-items: center;
+}
+
+.admin-form .form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-form .form-row.full {
+  grid-column: 1 / -1;
+}
+
+.admin-form label {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.admin-form textarea { min-height: 80px; resize: vertical; }
+
+.form-actions { grid-column: 1 / -1; text-align: center; margin-top: 8px; }
+
+@media (max-width: 800px) {
+  .admin-form { grid-template-columns: 1fr; }
+  .dash-title { font-size: 26px; }
+}
