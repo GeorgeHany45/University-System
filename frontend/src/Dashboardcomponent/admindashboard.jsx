@@ -4,6 +4,7 @@ import { catalogsData } from '../data/coursecatalog';
 
 const AdminDashboard = () => {
   const [teachers, setTeachers] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [form, setForm] = useState({
     catalogId: 1,
     department: '',
@@ -25,6 +26,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchTeachers();
+    fetchCourses();
   }, []);
 
   const fetchTeachers = async () => {
@@ -35,6 +37,45 @@ const AdminDashboard = () => {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const fetchCourses = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/courses/all');
+      const data = await res.json();
+      if (res.ok) setCourses(data.courses || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const getAvailableRooms = () => {
+    const allRooms = Array.from({ length: 13 }, (_, i) => 900 + i);
+    
+    // If no days or time selected, show all rooms
+    if (!form.scheduleDays || !form.scheduleTime) return allRooms;
+
+    const selectedDays = form.scheduleDays.split(',').map(d => d.trim());
+    
+    // Find booked rooms for the selected days and time
+    const bookedRooms = courses
+      .filter(course => {
+        if (!course.schedule) return false;
+        
+        const courseTime = course.schedule.time;
+        const courseDays = course.schedule.days || [];
+        
+        // Check if there's overlap in days and time
+        const hasDayOverlap = courseDays.some(day => selectedDays.includes(day));
+        const hasTimeOverlap = courseTime === form.scheduleTime;
+        
+        return hasDayOverlap && hasTimeOverlap;
+      })
+      .map(course => parseInt(course.schedule.room))
+      .filter(room => !isNaN(room));
+
+    // Return only available rooms (not booked)
+    return allRooms.filter(room => !bookedRooms.includes(room));
   };
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
@@ -130,12 +171,41 @@ const AdminDashboard = () => {
 
           <div className="form-row">
             <label>Semester</label>
-            <input value={form.semester} onChange={e=>handleChange('semester', e.target.value)} />
+            <select value={form.semester} onChange={(e)=>handleChange('semester', e.target.value)}>
+              <option value="">-- Select semester --</option>
+              <option value="Spring">Spring</option>
+              <option value="Fall">Fall</option>
+              <option value="Summer">Summer</option>
+            </select>
           </div>
 
           <div className="form-row">
-            <label>Schedule</label>
-            <input placeholder="Mon,Wed 10:00-11:30 Room 101" value={form.scheduleTime} onChange={e=>handleChange('scheduleTime', e.target.value)} />
+            <label>Schedule Days</label>
+            <select value={form.scheduleDays} onChange={(e)=>handleChange('scheduleDays', e.target.value)}>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Monday,Wednesday">Monday, Wednesday</option>
+              <option value="Tuesday,Thursday">Tuesday, Thursday</option>
+              <option value="Monday,Wednesday,Friday">Monday, Wednesday, Friday</option>
+            </select>
+          </div>
+
+          <div className="form-row">
+            <label>Time</label>
+            <input type="time" value={form.scheduleTime} onChange={e=>handleChange('scheduleTime', e.target.value)} />
+          </div>
+
+          <div className="form-row">
+            <label>Room</label>
+            <select value={form.scheduleRoom} onChange={(e)=>handleChange('scheduleRoom', e.target.value)}>
+              <option value="">-- Select room --</option>
+              {getAvailableRooms().map(room => (
+                <option key={room} value={room}>{room}</option>
+              ))}
+            </select>
           </div>
 
           <div className="form-row full">
