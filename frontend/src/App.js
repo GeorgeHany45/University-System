@@ -9,6 +9,7 @@ import MyCourses from './Dashboardcomponent/mycourses';
 import AdminDashboard from './Dashboardcomponent/admindashboard';
 import ViewAssignments from './assignmentscomponent/viewassignments';
 import AssignmentDetails from './assignmentscomponent/assignmentdetails';
+import ViewGrades from './Dashboardcomponent/viewgrades';
 import Notfound from './notFound';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path='/student-dashboard/mycourses' element ={<MyCourses/>}/>
         <Route path='/student-dashboard/assignments' element ={<ViewAssignments/>}/>
           <Route path='/student-dashboard/assignments/:id' element ={<AssignmentDetails/>}/>
+        <Route path='/student-dashboard/grades' element={<ViewGrades/>}/>
         <Route path='/admin-dashboard' element ={<AdminDashboard/>}/>
         <Route path='*' element={<Notfound/>} />
       </Routes>

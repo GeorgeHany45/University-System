@@ -18,6 +18,10 @@ const StudentDashboard = () => {
     const handleViewAssignments = () => {
         navigate('/student-dashboard/assignments')
     }
+
+    const handleViewGrades = () => {
+        navigate('/student-dashboard/grades')
+    }
     
   return (
     <div className="dashboard-container">
@@ -54,6 +58,7 @@ const StudentDashboard = () => {
           title="Grades"
           description="View your course performance and grades."
           buttonText="Show Grades"
+          onClick={handleViewGrades}
         />
 
       </div>
