@@ -138,4 +138,15 @@ router.delete("/unenroll/:enrollmentId", async (req, res) => {
   }
 });
 
+// CREATE COURSE
+router.post("/", (req, res) => {
+  const { name, code, description, teacherId } = req.body;
+
+  if (!name || !code || !teacherId) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+});
+
+
 module.exports = router;

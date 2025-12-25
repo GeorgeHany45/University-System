@@ -1,0 +1,52 @@
+.upload-assignment-page {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f6fa;
+  }
+  
+  .upload-assignment-card {
+    background: #ffffff;
+    padding: 30px;
+    width: 520px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .upload-assignment-card h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #1f2937;
+  }
+  
+  .upload-assignment-card input,
+  .upload-assignment-card textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  .upload-assignment-card textarea {
+    resize: none;
+  }
+  
+  .upload-assignment-card button {
+    width: 100%;
+    padding: 12px;
+    background-color: #f97316;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .upload-assignment-card button:hover {
+    background-color: #ea580c;
+  }
+  

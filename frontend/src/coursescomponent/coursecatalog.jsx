@@ -15,7 +15,7 @@ const CourseCatalogPage = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/courses/all');
+      const res = await fetch('http://localhost:5001/api/courses/all');
       if (!res.ok) throw new Error('no backend');
       const data = await res.json();
       setCourses(data.courses || []);
@@ -37,7 +37,7 @@ const CourseCatalogPage = () => {
     const userId = getCurrentUserId();
 
     try {
-      const response = await fetch("http://localhost:5000/api/courses/enroll", {
+      const response = await fetch("http://localhost:5001/api/courses/enroll", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

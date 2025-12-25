@@ -18,15 +18,15 @@ const LoginSignUp = () => {
     e.preventDefault();
 
     const url = isSignUp
-      ? "http://localhost:5000/api/users/signup"
-      : "http://localhost:5000/api/users/login";
-
+    ? "http://localhost:5001/api/users/signup"
+    : "http://localhost:5001/api/users/login";
+  
     const payload = isSignUp
       ? { username, email, password, role }
       : { username, password, role };
 
     try {
-      const res = await fetch(url, {
+      const res = await fetch(url,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

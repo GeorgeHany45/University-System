@@ -20,7 +20,7 @@ const MyCourses = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/courses/student/${userId}`
+        `http://localhost:5001/api/courses/student/${userId}`
       );
       const data = await response.json();
 
@@ -44,7 +44,7 @@ const MyCourses = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/courses/unenroll/${enrollmentId}`,
+        `http://localhost:5001/api/courses/unenroll/${enrollmentId}`,
         {
           method: "DELETE",
         }

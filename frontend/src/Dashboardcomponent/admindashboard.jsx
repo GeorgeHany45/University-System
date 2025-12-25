@@ -31,7 +31,7 @@ const AdminDashboard = () => {
 
   const fetchTeachers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/users/teachers');
+      const res = await fetch('http://localhost:5001/api/users/teachers');
       const data = await res.json();
       if (res.ok) setTeachers(data.teachers || []);
     } catch (err) {
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/courses/all');
+      const res = await fetch('http://localhost:5001/api/courses/all');
       const data = await res.json();
       if (res.ok) setCourses(data.courses || []);
     } catch (err) {
@@ -105,7 +105,7 @@ const AdminDashboard = () => {
     };
 
     try {
-      const res = await fetch('http://localhost:5000/api/courses/create', {
+      const res = await fetch('http://localhost:5001/api/courses/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

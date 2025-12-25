@@ -1,16 +1,18 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
-import Navbar from './navbarcomponent/navbar';
-import Login from './loginpagecomponent/loginpages';
-import HomePage from './homepagecomponent/homepage';
-import StudentDashboard from './Dashboardcomponent/studentdashboard';
-import TeacherDashboard from './Dashboardcomponent/teacherdashboard';
-import CatalogCard from './coursescomponent/coursecatalog';
-import MyCourses from './Dashboardcomponent/mycourses';
-import AdminDashboard from './Dashboardcomponent/admindashboard';
-import ViewAssignments from './assignmentscomponent/viewassignments';
-import AssignmentDetails from './assignmentscomponent/assignmentdetails';
-import ViewGrades from './Dashboardcomponent/viewgrades';
-import Notfound from './notFound';
+import { Route, Routes, useLocation } from "react-router-dom";
+import Navbar from "./navbarcomponent/navbar";
+import Login from "./loginpagecomponent/loginpages";
+import HomePage from "./homepagecomponent/homepage";
+import StudentDashboard from "./Dashboardcomponent/studentdashboard";
+import TeacherDashboard from "./Dashboardcomponent/teacherdashboard";
+import CatalogCard from "./coursescomponent/coursecatalog";
+import MyCourses from "./Dashboardcomponent/mycourses";
+import AdminDashboard from "./Dashboardcomponent/admindashboard";
+import ViewAssignments from "./assignmentscomponent/viewassignments";
+import AssignmentDetails from "./assignmentscomponent/assignmentdetails";
+import ViewGrades from "./Dashboardcomponent/viewgrades";
+import Notfound from "./notFound";
+import UploadAssignment from "./teacher/UploadAssignment";
+import UploadGrades from "./teacher/UploadGrades";
 
 function App() {
   const location = useLocation();
@@ -27,13 +29,15 @@ function App() {
         {/* Dashboards */}
         <Route path="/student-dashboard" element={<StudentDashboard />} />
         <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
-        <Route path='/student-dashboard/addcourse' element ={<CatalogCard/>}/>
-        <Route path='/student-dashboard/mycourses' element ={<MyCourses/>}/>
-        <Route path='/student-dashboard/assignments' element ={<ViewAssignments/>}/>
-          <Route path='/student-dashboard/assignments/:id' element ={<AssignmentDetails/>}/>
-        <Route path='/student-dashboard/grades' element={<ViewGrades/>}/>
-        <Route path='/admin-dashboard' element ={<AdminDashboard/>}/>
-        <Route path='*' element={<Notfound/>} />
+        <Route path="/student-dashboard/addcourse" element={<CatalogCard />} />
+        <Route path="/student-dashboard/mycourses" element={<MyCourses />} />
+        <Route path="/student-dashboard/assignments" element={<ViewAssignments />}/>
+        <Route path="/student-dashboard/assignments/:id" element={<AssignmentDetails />}/>
+        <Route path="/student-dashboard/grades" element={<ViewGrades />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="*" element={<Notfound />} />
+        <Route path="/teacher/upload-assignment" element={<UploadAssignment />}/>
+        <Route path="/upload-grades" element={<UploadGrades />} />
       </Routes>
     </div>
   );
