@@ -272,4 +272,72 @@ export const coursesData = [
         },
         lmsLink: "https://lms.university.edu/courses/chem101"
     }
-];
+        ,
+        // Engineering Courses
+        {
+            id: 13,
+            catalogId: 3,
+            department: "Engineering",
+            code: "ENGR101",
+            title: "Introduction to Engineering",
+            description: "Overview of engineering disciplines and career paths",
+            credits: 3,
+            type: "core",
+            instructor: "Dr. Patel",
+            email: "patel@university.edu",
+            enrolled: 20,
+            capacity: 40,
+            prerequisites: [],
+            semester: "Fall 2024",
+            schedule: {
+                days: ["Tuesday", "Thursday"],
+                time: "9:00 AM - 10:30 AM",
+                room: "Engineering Building - Room 110"
+            },
+            lmsLink: "https://lms.university.edu/courses/engr101"
+        },
+        {
+            id: 14,
+            catalogId: 3,
+            department: "Engineering",
+            code: "ENGR201",
+            title: "Statics",
+            description: "Study of forces in static equilibrium for engineering systems",
+            credits: 4,
+            type: "core",
+            instructor: "Prof. Gomez",
+            email: "gomez@university.edu",
+            enrolled: 18,
+            capacity: 35,
+            prerequisites: [],
+            semester: "Fall 2024",
+            schedule: {
+                days: ["Monday", "Wednesday"],
+                time: "11:00 AM - 12:30 PM",
+                room: "Engineering Building - Room 210"
+            },
+            lmsLink: "https://lms.university.edu/courses/engr201"
+        },
+        {
+            id: 15,
+            catalogId: 3,
+            department: "Engineering",
+            code: "ENGR305",
+            title: "Thermodynamics",
+            description: "Principles of thermodynamics and applications in engineering",
+            credits: 4,
+            type: "core",
+            instructor: "Dr. Ahmed",
+            email: "ahmed@university.edu",
+            enrolled: 22,
+            capacity: 40,
+            prerequisites: ["PHYS101"],
+            semester: "Fall 2024",
+            schedule: {
+                days: ["Tuesday", "Thursday"],
+                time: "2:00 PM - 3:30 PM",
+                room: "Engineering Building - Room 305"
+            },
+            lmsLink: "https://lms.university.edu/courses/engr305"
+        }
+    ];

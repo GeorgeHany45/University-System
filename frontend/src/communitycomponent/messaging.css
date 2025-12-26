@@ -1,0 +1,363 @@
+.messaging-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: calc(100vh - 80px);
+}
+
+.messaging-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.messaging-header h1 {
+  margin: 0;
+  color: #333;
+  font-size: 28px;
+}
+
+.new-message-btn {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.new-message-btn:hover {
+  background-color: #1976d2;
+}
+
+.new-message-form {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.new-message-form h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.new-message-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.new-message-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+.new-message-form input,
+.new-message-form select,
+.new-message-form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.new-message-form textarea {
+  resize: vertical;
+}
+
+.send-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  align-self: flex-start;
+  transition: background-color 0.3s;
+}
+
+.send-btn:hover {
+  background-color: #45a049;
+}
+
+.messaging-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.messaging-tabs button {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+}
+
+.messaging-tabs button.active {
+  border-bottom-color: #2196f3;
+  color: #2196f3;
+  font-weight: 600;
+}
+
+.messaging-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 500px;
+}
+
+.messages-list {
+  border-right: 1px solid #eee;
+  padding-right: 20px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.message-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.message-item:hover {
+  background-color: #f9f9f9;
+}
+
+.message-item.unread {
+  background-color: #e3f2fd;
+  font-weight: 500;
+}
+
+.message-item.selected {
+  background-color: #bbdefb;
+  border-left: 4px solid #2196f3;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.message-header strong {
+  color: #333;
+}
+
+.message-date {
+  color: #666;
+  font-size: 12px;
+}
+
+.message-subject {
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.message-preview {
+  color: #666;
+  font-size: 14px;
+}
+
+.meeting-info {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.meeting-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.approve-btn,
+.reject-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.approve-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.reject-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.status-badge.pending {
+  background-color: #ff9800;
+  color: white;
+}
+
+.status-badge.approved {
+  background-color: #4caf50;
+  color: white;
+}
+
+.status-badge.rejected {
+  background-color: #f44336;
+  color: white;
+}
+
+.status-badge.completed {
+  background-color: #2196f3;
+  color: white;
+}
+
+.conversation-view {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
+
+.conversation-header {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.conversation-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.conversation-messages {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 400px;
+  padding-right: 10px;
+}
+
+.conversation-message {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  max-width: 80%;
+}
+
+.conversation-message.sent {
+  background-color: #2196f3;
+  color: white;
+  margin-left: auto;
+}
+
+.conversation-message.received {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.message-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.message-content {
+  line-height: 1.5;
+}
+
+.reply-section {
+  margin-top: 20px;
+  border-top: 2px solid #eee;
+  padding-top: 20px;
+}
+
+.reply-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reply-section textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.reply-btn {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.reply-btn:hover {
+  background-color: #1976d2;
+}
+
+@media (max-width: 968px) {
+  .messaging-content {
+    grid-template-columns: 1fr;
+  }
+
+  .messages-list {
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .conversation-view {
+    padding-left: 0;
+  }
+}
+

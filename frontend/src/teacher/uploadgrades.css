@@ -1,0 +1,64 @@
+.upload-grades-page {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f4f6f8;
+  }
+  
+  .upload-grades-card {
+    background: #ffffff;
+    width: 420px;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  }
+  
+  .upload-grades-card h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #1f2937;
+  }
+  
+  .upload-grades-card label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #374151;
+  }
+  
+  .upload-grades-card input,
+  .upload-grades-card select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  .upload-grades-card input:focus,
+  .upload-grades-card select:focus {
+    border-color: #f97316;
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+  }
+  
+  .upload-grades-card button {
+    width: 100%;
+    padding: 12px;
+    background-color: #f97316;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .upload-grades-card button:hover {
+    background-color: #ea580c;
+  }
+  

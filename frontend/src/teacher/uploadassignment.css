@@ -1,0 +1,93 @@
+.upload-assignment-page {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f6fa;
+  }
+  
+  .upload-assignment-card {
+    background: #ffffff;
+    padding: 30px;
+    width: 520px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .upload-assignment-card h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #1f2937;
+  }
+  
+  .upload-assignment-card label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+    font-size: 14px;
+  }
+
+  .upload-assignment-card input,
+  .upload-assignment-card select,
+  .upload-assignment-card textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+
+  .upload-assignment-card input:focus,
+  .upload-assignment-card select:focus,
+  .upload-assignment-card textarea:focus {
+    outline: none;
+    border-color: #f97316;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  }
+
+  .upload-assignment-card input:disabled,
+  .upload-assignment-card select:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .upload-assignment-card input[type="file"] {
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .upload-assignment-card input[type="file"]::-webkit-file-upload-button {
+    padding: 6px 12px;
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .upload-assignment-card textarea {
+    resize: none;
+  }
+  
+  .upload-assignment-card button {
+    width: 100%;
+    padding: 12px;
+    background-color: #f97316;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .upload-assignment-card button:hover {
+    background-color: #ea580c;
+  }
+  
