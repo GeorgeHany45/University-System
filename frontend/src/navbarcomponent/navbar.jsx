@@ -45,7 +45,8 @@ const Navbar = () => {
                     Dashboard
                 </NavLink>
 
-                {/* Staff */}
+
+                {/* Staff directory (public) */}
                 <NavLink 
                     to='/staff'
                     style={({ isActive }) => ({
@@ -56,6 +57,20 @@ const Navbar = () => {
                 >
                     Staff
                 </NavLink>
+
+                {/* Admin staff tools */}
+                {role === 'admin' && (
+                  <NavLink 
+                      to='/admin/staff'
+                      style={({ isActive }) => ({
+                          color: isActive ? '#ff6b35' : '#ffffff',
+                          borderBottom: isActive ? '3px solid #ff6b35' : 'none',
+                          paddingBottom: isActive ? '20px' : '0'
+                      })}
+                  >
+                      Admin Staff
+                  </NavLink>
+                )}
 
                 {/* Community */}
                 <NavLink 

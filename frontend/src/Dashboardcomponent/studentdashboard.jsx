@@ -22,6 +22,10 @@ const StudentDashboard = () => {
     const handleViewGrades = () => {
         navigate('/student-dashboard/grades')
     }
+
+    const handleViewQuestionnaires = () => {
+        navigate('/student-dashboard/questionnaires')
+    }
     
   return (
     <div className="dashboard-container">
@@ -59,6 +63,14 @@ const StudentDashboard = () => {
           description="View your course performance and grades."
           buttonText="Show Grades"
           onClick={handleViewGrades}
+        />
+
+        <DashboardCard
+          icon={<i className="fas fa-clipboard-list"></i>}
+          title="Questionnaires"
+          description="Complete teacher feedback questionnaires."
+          buttonText="Answer Now"
+          onClick={handleViewQuestionnaires}
         />
 
       </div>

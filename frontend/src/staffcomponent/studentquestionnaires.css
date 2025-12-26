@@ -1,0 +1,185 @@
+.student-questionnaires-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  min-height: calc(100vh - 250px);
+}
+
+.student-questionnaires-container h2 {
+  text-align: center;
+  color: white;
+  font-size: 2em;
+  margin-bottom: 30px;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.questionnaire-block {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-left: 5px solid #3498db;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.questionnaire-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.questionnaire-block h3 {
+  color: #2c3e50;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.questionnaire-block h3::before {
+  content: "📝";
+  font-size: 1.3em;
+}
+
+.questionnaire-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.question-block {
+  background-color: #f8fbff;
+  padding: 18px;
+  border-radius: 8px;
+  border-left: 3px solid #3498db;
+}
+
+.question-block label {
+  display: block;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.question-block input[type="text"],
+.question-block textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e6ed;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.question-block input[type="text"]:focus,
+.question-block textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background-color: #f8fbff;
+}
+
+.questionnaire-button {
+  align-self: flex-start;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.questionnaire-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.questionnaire-button:active {
+  transform: translateY(0);
+}
+
+.no-questionnaires {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.no-questionnaires p {
+  margin: 0;
+}
+
+.success-notification {
+  background-color: #d4edda;
+  color: #155724;
+  border: 2px solid #28a745;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+.error-notification {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 2px solid #f5c6cb;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .student-questionnaires-container {
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .student-questionnaires-container h2 {
+    font-size: 1.5em;
+  }
+
+  .questionnaire-block {
+    padding: 18px;
+  }
+
+  .questionnaire-block h3 {
+    font-size: 1.2em;
+  }
+
+  .question-block {
+    padding: 14px;
+  }
+
+  .questionnaire-button {
+    width: 100%;
+    text-align: center;
+  }
+}

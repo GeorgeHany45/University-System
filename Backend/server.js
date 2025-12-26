@@ -4,6 +4,7 @@ const { connectDB, sequelize } = require("./db");
 const userRoutes = require("./routes/users");
 const courseRoutes = require("./routes/courses");
 const assignmentRoutes = require("./routes/assignments");
+const questionnaireRoutes = require("./routes/questionnaire");
 const gradeRoutes = require("./routes/grades");
 const messageRoutes = require("./routes/messages");
 const announcementRoutes = require("./routes/announcements");
@@ -18,6 +19,7 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/assignments", assignmentRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/grades", gradeRoutes);
+app.use("/api/questionnaire", questionnaireRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/announcements", announcementRoutes);
 
@@ -34,6 +36,7 @@ const startServer = async () => {
   require("./models/grade");
   require("./models/message");
   require("./models/announcement");
+  require("./models/questionnaire");
 
   // Sync models (create tables if they don't exist)
   // Use alter: false to avoid data loss, but ensure tables are created

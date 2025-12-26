@@ -14,6 +14,9 @@ import Notfound from "./notFound";
 import UploadAssignment from "./teacher/UploadAssignment";
 import UploadGrades from "./teacher/UploadGrades";
 import Community from "./communitycomponent/community";
+import AdminStaff from "./staffcomponent/adminstaff";
+import StudentQuestionnaires from "./staffcomponent/studentquestionnaires";
+import StaffPublic from "./staffcomponent/staffpublic";
 
 function App() {
   const location = useLocation();
@@ -40,6 +43,12 @@ function App() {
         <Route path="*" element={<Notfound />} />
         <Route path="/teacher/upload-assignment" element={<UploadAssignment />}/>
         <Route path="/upload-grades" element={<UploadGrades />} />
+        {/* Public staff directory */}
+        <Route path="/staff" element={<StaffPublic />} />
+        {/* Admin staff questionnaire page */}
+        <Route path="/admin/staff" element={<AdminStaff />} />
+        {/* Student: answer teacher questionnaires */}
+        <Route path="/student-dashboard/questionnaires" element={<StudentQuestionnaires />} />
       </Routes>
     </div>
   );
