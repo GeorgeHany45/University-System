@@ -1,32 +1,25 @@
 import React, { useEffect, useState } from "react";
 import './dashboard.css';
 import { catalogsData } from '../data/coursecatalog';
+import { coursesData } from '../data/coursedata';
 
 const AdminDashboard = () => {
   const [teachers, setTeachers] = useState([]);
-  const [courses, setCourses] = useState([]);
+  const [existingCourses, setExistingCourses] = useState([]); // Courses already in database
+  const [selectedCatalogId, setSelectedCatalogId] = useState(1);
   const [form, setForm] = useState({
-    catalogId: 1,
-    department: '',
-    code: '',
-    title: '',
-    description: '',
-    credits: 3,
-    type: 'core',
+    courseId: '', // Selected course from catalog
     instructorId: null,
-    instructorName: '',
-    email: '',
     capacity: 30,
     semester: '',
     scheduleDays: 'Monday,Wednesday',
     scheduleTime: '',
     scheduleRoom: '',
-    lmsLink: ''
   });
 
   useEffect(() => {
     fetchTeachers();
-    fetchCourses();
+    fetchExistingCourses();
   }, []);
 
   const fetchTeachers = async () => {
@@ -39,14 +32,25 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchCourses = async () => {
+  const fetchExistingCourses = async () => {
     try {
       const res = await fetch('http://localhost:5001/api/courses/all');
       const data = await res.json();
-      if (res.ok) setCourses(data.courses || []);
+      if (res.ok) setExistingCourses(data.courses || []);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  // Get courses from catalog data filtered by selected category
+  const getCatalogCourses = () => {
+    return coursesData.filter(course => course.catalogId === parseInt(selectedCatalogId));
+  };
+
+  // Get selected course details
+  const getSelectedCourse = () => {
+    if (!form.courseId) return null;
+    return coursesData.find(c => c.id === parseInt(form.courseId));
   };
 
   const getAvailableRooms = () => {
@@ -58,7 +62,7 @@ const AdminDashboard = () => {
     const selectedDays = form.scheduleDays.split(',').map(d => d.trim());
     
     // Find booked rooms for the selected days and time
-    const bookedRooms = courses
+    const bookedRooms = existingCourses
       .filter(course => {
         if (!course.schedule) return false;
         
@@ -71,7 +75,10 @@ const AdminDashboard = () => {
         
         return hasDayOverlap && hasTimeOverlap;
       })
-      .map(course => parseInt(course.schedule.room))
+      .map(course => {
+        const room = course.schedule?.room;
+        return typeof room === 'string' ? parseInt(room.replace(/\D/g, '')) : parseInt(room);
+      })
       .filter(room => !isNaN(room));
 
     // Return only available rooms (not booked)
@@ -83,17 +90,34 @@ const AdminDashboard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const selectedCourse = getSelectedCourse();
+    if (!selectedCourse) {
+      alert('Please select a course from the catalog');
+      return;
+    }
+
+    if (!form.instructorId) {
+      alert('Please select a teacher to assign');
+      return;
+    }
+
+    const selectedTeacher = teachers.find(t => t.id === parseInt(form.instructorId));
+    if (!selectedTeacher) {
+      alert('Selected teacher not found');
+      return;
+    }
+
     const payload = {
-      catalogId: parseInt(form.catalogId),
-      department: form.department || catalogsData.find(c=>c.id===parseInt(form.catalogId))?.name || '',
-      code: form.code,
-      title: form.title,
-      description: form.description,
-      credits: parseInt(form.credits),
-      type: form.type,
-      instructorId: form.instructorId ? parseInt(form.instructorId) : null,
-      instructorName: form.instructorId ? (teachers.find(t=>t.id===parseInt(form.instructorId))?.username || '') : form.instructorName,
-      email: form.email,
+      catalogId: selectedCourse.catalogId,
+      department: selectedCourse.department,
+      code: selectedCourse.code,
+      title: selectedCourse.title,
+      description: selectedCourse.description,
+      credits: selectedCourse.credits,
+      type: selectedCourse.type,
+      instructorId: parseInt(form.instructorId),
+      instructorName: selectedTeacher.username,
+      email: selectedTeacher.email,
       capacity: parseInt(form.capacity),
       semester: form.semester,
       schedule: {
@@ -101,7 +125,8 @@ const AdminDashboard = () => {
         time: form.scheduleTime,
         room: form.scheduleRoom
       },
-      lmsLink: form.lmsLink
+      lmsLink: selectedCourse.lmsLink || '',
+      prerequisites: selectedCourse.prerequisites || []
     };
 
     try {
@@ -112,11 +137,21 @@ const AdminDashboard = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        alert('Course created successfully');
-        // reset minimal fields
-        setForm({ ...form, code: '', title: '', description: '' });
+        alert('Course assigned to teacher successfully!');
+        // Reset form
+        setForm({
+          courseId: '',
+          instructorId: null,
+          capacity: 30,
+          semester: '',
+          scheduleDays: 'Monday,Wednesday',
+          scheduleTime: '',
+          scheduleRoom: '',
+        });
+        // Refresh courses list
+        fetchExistingCourses();
       } else {
-        alert(data.message || 'Failed to create course');
+        alert(data.message || 'Failed to assign course');
       }
     } catch (err) {
       console.error(err);
@@ -124,44 +159,74 @@ const AdminDashboard = () => {
     }
   };
 
+  const selectedCourse = getSelectedCourse();
+
   return (
     <div className="dashboard-container">
-      <h1 className="dash-title">Admin Dashboard — Add Course</h1>
+      <h1 className="dash-title">Admin Dashboard — Assign Course to Teacher</h1>
 
       <div className="admin-card">
         <form className="admin-form" onSubmit={handleSubmit}>
           <div className="form-row">
-            <label>Category</label>
-            <select value={form.catalogId} onChange={(e)=>handleChange('catalogId', e.target.value)}>
-              {catalogsData.map(cat=> (
-                <option key={cat.id} value={cat.id}>{cat.name}</option>
+            <label>Course Category</label>
+            <select 
+              value={selectedCatalogId} 
+              onChange={(e) => {
+                setSelectedCatalogId(parseInt(e.target.value));
+                setForm({ ...form, courseId: '' }); // Reset course selection when category changes
+              }}
+            >
+              {catalogsData.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.icon} {cat.name}</option>
               ))}
             </select>
           </div>
 
           <div className="form-row">
-            <label>Course Code</label>
-            <input value={form.code} onChange={e=>handleChange('code', e.target.value)} required />
+            <label>Select Course from Catalog</label>
+            <select 
+              value={form.courseId} 
+              onChange={(e) => handleChange('courseId', e.target.value)}
+              required
+            >
+              <option value="">-- Select a course --</option>
+              {getCatalogCourses().map(course => (
+                <option key={course.id} value={course.id}>
+                  {course.code} - {course.title} ({course.credits} credits)
+                </option>
+              ))}
+            </select>
           </div>
 
-          <div className="form-row">
-            <label>Title</label>
-            <input value={form.title} onChange={e=>handleChange('title', e.target.value)} required />
-          </div>
+          {selectedCourse && (
+            <div className="form-row full" style={{ 
+              padding: '15px', 
+              background: '#f0f7ff', 
+              borderRadius: '8px',
+              marginBottom: '15px',
+              borderLeft: '4px solid #2196f3'
+            }}>
+              <strong>Selected Course Details:</strong>
+              <p><strong>Code:</strong> {selectedCourse.code}</p>
+              <p><strong>Title:</strong> {selectedCourse.title}</p>
+              <p><strong>Description:</strong> {selectedCourse.description}</p>
+              <p><strong>Credits:</strong> {selectedCourse.credits}</p>
+              <p><strong>Type:</strong> {selectedCourse.type}</p>
+            </div>
+          )}
 
           <div className="form-row">
             <label>Assign Teacher</label>
-            <select value={form.instructorId || ''} onChange={(e)=>handleChange('instructorId', e.target.value)}>
-              <option value=''>-- Select teacher --</option>
+            <select 
+              value={form.instructorId || ''} 
+              onChange={(e) => handleChange('instructorId', e.target.value)}
+              required
+            >
+              <option value="">-- Select teacher --</option>
               {teachers.map(t => (
                 <option key={t.id} value={t.id}>{t.username} ({t.email})</option>
               ))}
             </select>
-          </div>
-
-          <div className="form-row">
-            <label>Credits</label>
-            <input type='number' value={form.credits} onChange={e=>handleChange('credits', e.target.value)} />
           </div>
 
           <div className="form-row">
@@ -208,13 +273,8 @@ const AdminDashboard = () => {
             </select>
           </div>
 
-          <div className="form-row full">
-            <label>Description</label>
-            <textarea value={form.description} onChange={e=>handleChange('description', e.target.value)} />
-          </div>
-
           <div className="form-actions">
-            <button type='submit' className='dash-btn'>Create Course</button>
+            <button type='submit' className='dash-btn'>Assign Course to Teacher</button>
           </div>
         </form>
       </div>

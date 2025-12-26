@@ -13,6 +13,7 @@ import ViewGrades from "./Dashboardcomponent/viewgrades";
 import Notfound from "./notFound";
 import UploadAssignment from "./teacher/UploadAssignment";
 import UploadGrades from "./teacher/UploadGrades";
+import Community from "./communitycomponent/community";
 
 function App() {
   const location = useLocation();
@@ -35,6 +36,7 @@ function App() {
         <Route path="/student-dashboard/assignments/:id" element={<AssignmentDetails />}/>
         <Route path="/student-dashboard/grades" element={<ViewGrades />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/community" element={<Community />} />
         <Route path="*" element={<Notfound />} />
         <Route path="/teacher/upload-assignment" element={<UploadAssignment />}/>
         <Route path="/upload-grades" element={<UploadGrades />} />

@@ -12,44 +12,72 @@ router.get("/course/:courseId", async (req, res) => {
     const assignments = await Assignment.findAll({
       where: { courseId },
       include: [
-        { model: Course, attributes: ["id", "name"] },
-        { model: User, attributes: ["id", "username"], as: "User" },
+        {
+          model: Course,
+          attributes: ["id", "code", "title", "department"],
+          as: "Course",
+        },
+        {
+          model: User,
+          attributes: ["id", "username", "email"],
+          as: "teacher",
+        },
       ],
       order: [["dueDate", "ASC"]],
     });
     res.json(assignments);
   } catch (err) {
+    console.error("GET COURSE ASSIGNMENTS ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// Get all assignments for a student (from enrolled courses)
-router.get("/student/:studentId", async (req, res) => {
+// Get all assignments for a student by username (from enrolled courses)
+router.get("/student/:username", async (req, res) => {
   try {
-    const { studentId } = req.params;
+    const { username } = req.params;
+    
+    // First, find the user by username
+    const student = await User.findOne({ where: { username } });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    // Get all course enrollments for this student
+    const CourseEnrollment = require("../models/courseEnrollment");
+    const enrollments = await CourseEnrollment.findAll({
+      where: { userId: student.id },
+    });
+
+    const courseIds = enrollments.map(e => e.courseId);
+
+    if (courseIds.length === 0) {
+      return res.json([]);
+    }
+
+    // Get all assignments for enrolled courses
     const assignments = await Assignment.findAll({
+      where: {
+        courseId: courseIds,
+      },
       include: [
         {
           model: Course,
-          attributes: ["id", "name"],
-          where: {
-            "$CourseEnrollments.UserId$": studentId,
-          },
-          include: [
-            {
-              model: require("../models/courseEnrollment"),
-              attributes: [],
-              where: { UserId: studentId },
-            },
-          ],
+          attributes: ["id", "code", "title", "department"],
+          as: "Course",
         },
-        { model: User, attributes: ["id", "username"], as: "User" },
+        {
+          model: User,
+          attributes: ["id", "username", "email"],
+          as: "teacher",
+        },
       ],
       order: [["dueDate", "ASC"]],
-      raw: false,
     });
+
     res.json(assignments);
   } catch (err) {
+    console.error("GET STUDENT ASSIGNMENTS ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -60,8 +88,16 @@ router.get("/:id", async (req, res) => {
     const { id } = req.params;
     const assignment = await Assignment.findByPk(id, {
       include: [
-        { model: Course, attributes: ["id", "name"] },
-        { model: User, attributes: ["id", "username"], as: "User" },
+        {
+          model: Course,
+          attributes: ["id", "code", "title", "department"],
+          as: "Course",
+        },
+        {
+          model: User,
+          attributes: ["id", "username", "email"],
+          as: "teacher",
+        },
       ],
     });
     if (!assignment) {
@@ -69,23 +105,7 @@ router.get("/:id", async (req, res) => {
     }
     res.json(assignment);
   } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Create new assignment (teacher only)
-router.post("/", async (req, res) => {
-  try {
-    const { title, description, dueDate, courseId, teacherId } = req.body;
-    const assignment = await Assignment.create({
-      title,
-      description,
-      dueDate,
-      courseId,
-      teacherId,
-    });
-    res.status(201).json(assignment);
-  } catch (err) {
+    console.error("GET ASSIGNMENT ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -121,19 +141,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// Temporary POST creating assignments
-router.post("/", (req, res) => {
-  const { courseId, title, deadline, description } = req.body;
-
-  if (!courseId || !title || !deadline) {
-    return res.status(400).json({ message: "Missing fields" });
-  }
-
-  res.status(201).json({
-    message: "Assignment created successfully",
-  });
-});
-
+// File upload configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -143,21 +151,73 @@ const storage = multer.diskStorage({
   },
 });
 
-// File upload 
-const upload = multer({ dest: "uploads/" });
-
-router.post("/upload", upload.single("file"), (req, res) => {
-  console.log("BODY:", req.body);
-  console.log("FILE:", req.file);
-
-  if (!req.file) {
-    return res.status(400).json({ message: "No file uploaded" });
+const upload = multer({ 
+  storage: storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit
   }
+});
 
-  res.status(201).json({
-    message: "Assignment uploaded successfully",
-    file: req.file.filename,
-  });
+router.post("/upload", upload.single("file"), async (req, res) => {
+  try {
+    console.log("UPLOAD ASSIGNMENT - BODY:", req.body);
+    console.log("UPLOAD ASSIGNMENT - FILE:", req.file);
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const { courseId, title, deadline, description } = req.body;
+    const teacherId = req.body.teacherId || null;
+
+    if (!courseId || !title || !deadline) {
+      return res.status(400).json({ message: "Missing required fields: courseId, title, deadline" });
+    }
+
+    // Parse deadline date - handle both date and datetime-local formats
+    let dueDate;
+    try {
+      dueDate = new Date(deadline);
+      if (isNaN(dueDate.getTime())) {
+        return res.status(400).json({ message: "Invalid deadline date format" });
+      }
+    } catch (err) {
+      return res.status(400).json({ message: "Invalid deadline date format" });
+    }
+
+    // Verify course exists
+    const course = await Course.findByPk(parseInt(courseId));
+    if (!course) {
+      return res.status(404).json({ message: "Course not found with ID: " + courseId });
+    }
+
+    // Create assignment in database
+    const assignment = await Assignment.create({
+      title,
+      description: description || "",
+      dueDate: dueDate,
+      courseId: parseInt(courseId),
+      teacherId: teacherId ? parseInt(teacherId) : null,
+      filePath: req.file.path,
+      fileName: req.file.originalname,
+    });
+
+    console.log("Assignment created successfully:", assignment.id);
+
+    res.status(201).json({
+      message: "Assignment uploaded successfully",
+      assignment,
+      file: req.file.filename,
+    });
+  } catch (err) {
+    console.error("UPLOAD ASSIGNMENT ERROR:", err);
+    console.error("Error stack:", err.stack);
+    res.status(500).json({ 
+      message: "Server error", 
+      error: err.message,
+      details: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
+  }
 });
 
 

@@ -18,9 +18,17 @@ const CourseCatalogPage = () => {
       const res = await fetch('http://localhost:5001/api/courses/all');
       if (!res.ok) throw new Error('no backend');
       const data = await res.json();
-      setCourses(data.courses || []);
+      const fetchedCourses = data.courses || [];
+      if (fetchedCourses.length > 0) {
+        setCourses(fetchedCourses);
+      } else {
+        // If backend returns empty array, use fallback data
+        console.log('No courses in database, using fallback data');
+        setCourses(fallbackCourses);
+      }
     } catch (err) {
-      // fallback to local data
+      // fallback to local data if backend is not available
+      console.log('Backend not available, using fallback data:', err);
       setCourses(fallbackCourses);
     }
   };

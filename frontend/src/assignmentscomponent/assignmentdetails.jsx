@@ -18,12 +18,17 @@ const AssignmentDetails = () => {
       .catch(() => setLoading(false));
   }, [id]);
 
-  const formatDate = (dateString) =>
-    new Date(dateString).toLocaleDateString("en-US", {
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
+  };
 
   if (loading) {
     return <div className="loading">Loading assignment...</div>;
@@ -42,26 +47,73 @@ const AssignmentDetails = () => {
 
   return (
     <div className="assignment-details-container">
-      <button
-        onClick={() => navigate("/student-dashboard/assignments")}
-        className="btn-back"
-      >
-        ← Back
-      </button>
+      <div className="details-header">
+        <button
+          onClick={() => navigate("/student-dashboard/assignments")}
+          className="btn-back"
+        >
+          ←
+        </button>
+        <div className="header-content">
+          <h1>{assignment.title}</h1>
+        </div>
+      </div>
 
-      <h1>{assignment.title}</h1>
+      <div className="details-grid">
+        <div>
+          <div className="description-card">
+            <h2>Assignment Details</h2>
+            <div className="full-description">
+              {assignment.description || "No description provided."}
+            </div>
+          </div>
 
-      <div className="info-card">
-        <p><strong>Course:</strong> {assignment.Course?.name}</p>
-        <p><strong>Due Date:</strong> {formatDate(assignment.dueDate)}</p>
-        <p><strong>Description:</strong></p>
-        <p>{assignment.description}</p>
+          {assignment.filePath && (
+            <div className="resources-card">
+              <h3>Assignment File</h3>
+              <div className="file-download">
+                <a
+                  href={`http://localhost:5001/${assignment.filePath}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="download-link"
+                >
+                  📄 {assignment.fileName || "Download Assignment"}
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
 
-        {assignment.grade && (
-          <p className="grade">
-            <strong>Grade:</strong> {assignment.grade}
-          </p>
-        )}
+        <div>
+          <div className="quick-info-card">
+            <h3>Quick Info</h3>
+            <div className="quick-info">
+              <div className="info-item">
+                <span className="label">Course:</span>
+                <span className="value">
+                  {assignment.Course?.code || assignment.Course?.title || "N/A"}
+                </span>
+              </div>
+              <div className="info-item">
+                <span className="label">Due Date:</span>
+                <span className="value highlight">{formatDate(assignment.dueDate)}</span>
+              </div>
+              {assignment.teacher && (
+                <div className="info-item">
+                  <span className="label">Instructor:</span>
+                  <span className="value">{assignment.teacher.username}</span>
+                </div>
+              )}
+              {assignment.grade && (
+                <div className="info-item">
+                  <span className="label">Grade:</span>
+                  <span className="value grade">{assignment.grade}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

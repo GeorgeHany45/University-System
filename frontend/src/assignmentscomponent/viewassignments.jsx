@@ -9,9 +9,13 @@ const ViewAssignments = () => {
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
-    const studentId = localStorage.getItem("userId");
+    const username = localStorage.getItem("username");
+    if (!username) {
+      setLoading(false);
+      return;
+    }
 
-    fetch(`http://localhost:5001/api/assignments/student/${studentId}`)
+    fetch(`http://localhost:5001/api/assignments/student/${username}`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -24,19 +28,23 @@ const ViewAssignments = () => {
           setAssignments([]);
         }
         setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching assignments:", err);
+        setLoading(false);
       });
-      
   }, []);
+
   const getFilteredAssignments = () => {
     if (!Array.isArray(assignments)) return [];
-  
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-  
+
     return assignments.filter((assignment) => {
       const dueDate = new Date(assignment.dueDate);
       dueDate.setHours(0, 0, 0, 0);
-  
+
       if (filter === "overdue") {
         return dueDate < today;
       } else if (filter === "upcoming") {
@@ -45,7 +53,6 @@ const ViewAssignments = () => {
       return true;
     });
   };
-  
 
   const getStatusBadge = (assignment) => {
     const today = new Date();
@@ -118,7 +125,7 @@ const ViewAssignments = () => {
 
               <div className="assignment-meta">
                 <span className="course-badge">
-                  {assignment.Course?.name}
+                  {assignment.Course?.code || assignment.Course?.title || "Course"}
                 </span>
                 <span className="due-date">
                   Due: {formatDate(assignment.dueDate)}
@@ -128,6 +135,19 @@ const ViewAssignments = () => {
               <p className="assignment-description">
                 {assignment.description}
               </p>
+
+              {assignment.filePath && (
+                <div className="assignment-file">
+                  <a
+                    href={`http://localhost:5001/${assignment.filePath}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="download-link"
+                  >
+                    📄 Download Assignment
+                  </a>
+                </div>
+              )}
 
               <div className="assignment-footer">
                 <button

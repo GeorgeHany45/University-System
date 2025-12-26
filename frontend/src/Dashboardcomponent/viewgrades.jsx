@@ -28,18 +28,31 @@ const ViewGrades = () => {
   // Fetch grades from backend
   
   useEffect(() => {
-    const studentId = localStorage.getItem("userId");
-    const username = localStorage.getItem("username") || "Student";
+    const username = localStorage.getItem("username");
+    if (!username) {
+      setLoading(false);
+      return;
+    }
 
-    fetch(`http://localhost:5001/api/grades/student/${studentId}`)
-      .then((res) => res.json())
+    fetch(`http://localhost:5001/api/grades/student/${username}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch grades");
+        }
+        return res.json();
+      })
       .then((data) => {
-        
+        if (!Array.isArray(data)) {
+          setLoading(false);
+          return;
+        }
+
         const termsMap = {};
 
         data.forEach((g) => {
-          const termId = g.termId || "summer-2025";
-          const termName = g.termName || "Summer 2025";
+          // Use course semester or default to current term
+          const termId = g.course?.semester || "summer-2025";
+          const termName = g.course?.semester || "Summer 2025";
 
           if (!termsMap[termId]) {
             termsMap[termId] = {
@@ -50,10 +63,10 @@ const ViewGrades = () => {
           }
 
           termsMap[termId].courses.push({
-            code: g.Course?.code || "CS-XXX",
-            title: g.Course?.name || "Course",
-            instructor: g.Course?.instructor || "Instructor",
-            credits: g.Course?.credits || 3,
+            code: g.course?.code || "CS-XXX",
+            title: g.course?.title || "Course",
+            instructor: g.course?.instructorName || "Instructor",
+            credits: g.course?.credits || 3,
             grade: g.grade,
           });
         });
@@ -68,7 +81,10 @@ const ViewGrades = () => {
         setSelectedTermId(terms[0]?.termId || "");
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error("Error fetching grades:", err);
+        setLoading(false);
+      });
   }, []);
 
   const terms = useMemo(

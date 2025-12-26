@@ -2,6 +2,11 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db");
 
 const Course = sequelize.define("Course", {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   catalogId: {
     type: DataTypes.INTEGER,
     allowNull: false,
