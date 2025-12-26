@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Announcement = require("../models/announcement");
 const User = require("../models/users");
+const AnnouncementAttribute = require("../models/announcementAttribute");
+const AnnouncementAttributeValue = require("../models/announcementAttributeValue");
 
 // Create a new announcement or event
 router.post("/create", async (req, res) => {
@@ -34,6 +36,28 @@ router.post("/create", async (req, res) => {
       priority: priority || "medium",
       isActive: true,
     });
+
+    // Also persist selected fields into EAV tables so announcement attributes
+    // are available in EAV form without changing the main Announcement table
+    try {
+      const attributesToSave = {
+        type: type || 'announcement',
+        eventDate: eventDate || null,
+        eventLocation: eventLocation || null,
+        targetAudience: targetAudience || 'all',
+        priority: priority || 'medium',
+        isActive: true,
+      };
+
+      for (const [name, val] of Object.entries(attributesToSave)) {
+        // find or create attribute definition
+        const [attr] = await AnnouncementAttribute.findOrCreate({ where: { name }, defaults: { dataType: 'text' } });
+        // create value record (store as text)
+        await AnnouncementAttributeValue.create({ announcementId: announcement.id, attributeId: attr.id, value: val === null ? null : String(val) });
+      }
+    } catch (e) {
+      console.warn('EAV write warning:', e.message);
+    }
 
     // Include author info in response
     const announcementWithAuthor = await Announcement.findByPk(announcement.id, {
@@ -155,6 +179,26 @@ router.put("/:id", async (req, res) => {
     }
 
     await announcement.update(updateData);
+
+    // Update EAV values for attributes that were part of the update
+    try {
+      const updatableAttrs = ["type", "eventDate", "eventLocation", "targetAudience", "priority", "isActive"];
+      for (const key of updatableAttrs) {
+        if (Object.prototype.hasOwnProperty.call(updateData, key)) {
+          const [attr] = await AnnouncementAttribute.findOrCreate({ where: { name: key }, defaults: { dataType: 'text' } });
+          const existing = await AnnouncementAttributeValue.findOne({ where: { announcementId: announcement.id, attributeId: attr.id } });
+          const valueText = updateData[key] === null ? null : String(updateData[key]);
+          if (existing) {
+            existing.value = valueText;
+            await existing.save();
+          } else {
+            await AnnouncementAttributeValue.create({ announcementId: announcement.id, attributeId: attr.id, value: valueText });
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('EAV update warning:', e.message);
+    }
 
     const updatedAnnouncement = await Announcement.findByPk(id, {
       include: [

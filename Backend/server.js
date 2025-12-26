@@ -36,7 +36,25 @@ const startServer = async () => {
   require("./models/grade");
   require("./models/message");
   require("./models/announcement");
+  // EAV models for announcements
+  require("./models/announcementAttribute");
+  require("./models/announcementAttributeValue");
   require("./models/questionnaire");
+
+  // Set up associations for EAV models (avoid circular requires in model files)
+  try {
+    const Announcement = require("./models/announcement");
+    const AnnouncementAttribute = require("./models/announcementAttribute");
+    const AnnouncementAttributeValue = require("./models/announcementAttributeValue");
+
+    Announcement.hasMany(AnnouncementAttributeValue, { foreignKey: 'announcementId', as: 'attributes' });
+    AnnouncementAttributeValue.belongsTo(Announcement, { foreignKey: 'announcementId' });
+
+    AnnouncementAttribute.hasMany(AnnouncementAttributeValue, { foreignKey: 'attributeId' });
+    AnnouncementAttributeValue.belongsTo(AnnouncementAttribute, { foreignKey: 'attributeId', as: 'attribute' });
+  } catch (e) {
+    console.warn('EAV associations setup skipped:', e.message);
+  }
 
   // Sync models (create tables if they don't exist)
   // Use alter: false to avoid data loss, but ensure tables are created
