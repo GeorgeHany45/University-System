@@ -92,6 +92,22 @@ const Messaging = () => {
     }
   }, [selectedUser, currentUserRole, fetchConversation]);
 
+  // Prepare a grouped conversation list (one item per other user, latest message first)
+  const listToRender = activeTab === "inbox" ? messages : sentMessages;
+
+  const groupedMessages = React.useMemo(() => {
+    const map = {};
+    listToRender.forEach((msg) => {
+      const other = activeTab === "inbox" ? msg.sender : msg.receiver;
+      if (!other || !other.id) return;
+      const key = other.id;
+      if (!map[key] || new Date(msg.createdAt) > new Date(map[key].createdAt)) {
+        map[key] = msg;
+      }
+    });
+    return Object.values(map).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }, [listToRender, activeTab]);
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     try {
@@ -132,6 +148,47 @@ const Messaging = () => {
       }
     } catch (err) {
       console.error("Error sending message:", err);
+      alert("Server error. Please try again.");
+    }
+  };
+
+  const handleReplySubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedUser) return;
+    try {
+      const payload = {
+        senderId: currentUserId,
+        receiverId: selectedUser.id,
+        subject: newMessage.subject || "",
+        content: newMessage.content,
+        messageType: newMessage.messageType || "general",
+        meetingDate: newMessage.meetingDate || null,
+      };
+
+      const res = await fetch("http://localhost:5001/api/messages/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setNewMessage({
+          receiverId: "",
+          subject: "",
+          content: "",
+          messageType: "general",
+          meetingDate: "",
+        });
+        // refresh conversation and lists
+        fetchConversation(selectedUser.id);
+        fetchInbox();
+        fetchSent();
+      } else {
+        alert(data.message || "Failed to send reply");
+      }
+    } catch (err) {
+      console.error("Error sending reply:", err);
       alert("Server error. Please try again.");
     }
   };
@@ -313,14 +370,11 @@ const Messaging = () => {
 
       <div className="messaging-content">
         <div className="messages-list">
-          {(activeTab === "inbox" ? messages : sentMessages).map((msg) => {
-            const otherUser =
-              activeTab === "inbox"
-                ? msg.sender
-                : msg.receiver;
+          {groupedMessages.map((msg) => {
+            const otherUser = activeTab === "inbox" ? msg.sender : msg.receiver;
             return (
               <div
-                key={msg.id}
+                key={otherUser?.id}
                 className={`message-item ${!msg.isRead && activeTab === "inbox" ? "unread" : ""} ${
                   selectedUser?.id === otherUser?.id ? "selected" : ""
                 }`}
@@ -420,16 +474,7 @@ const Messaging = () => {
               ))}
             </div>
             <div className="reply-section">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setNewMessage({
-                    ...newMessage,
-                    receiverId: selectedUser.id.toString(),
-                  });
-                  setShowNewMessage(true);
-                }}
-              >
+              <form onSubmit={handleReplySubmit}>
                 <textarea
                   placeholder="Type a reply..."
                   rows="3"
