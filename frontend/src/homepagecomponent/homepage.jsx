@@ -1,6 +1,9 @@
 import './homepage.css'
+import { useNavigate } from 'react-router-dom'
 
 const Homepage = () => {
+    const navigate = useNavigate()
+
     return (
         <div>
             {/* Hero Section */}
@@ -9,9 +12,9 @@ const Homepage = () => {
                 <h1>University Management System</h1>
                 <p>Welcome to our <strong>University Management System</strong><br></br>
     Shaping minds, inspiring growth, and preparing leaders for tomorrow.</p>
-                <div className='button'>
-                   <button>Contact Us</button> 
-                </div>
+                     <div className='button'>
+                         <button onClick={() => navigate('/contact')}>Contact Us</button> 
+                     </div>
             </div>
 
             {/* Feature Cards Section */}

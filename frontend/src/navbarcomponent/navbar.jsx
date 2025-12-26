@@ -83,6 +83,18 @@ const Navbar = () => {
                 >
                     Community
                 </NavLink>
+
+                {/* Contact (showcase only) */}
+                <NavLink 
+                    to='/contact'
+                    style={({ isActive }) => ({
+                        color: isActive ? '#ff6b35' : '#ffffff',
+                        borderBottom: isActive ? '3px solid #ff6b35' : 'none',
+                        paddingBottom: isActive ? '20px' : '0'
+                    })}
+                >
+                    Contact
+                </NavLink>
                 
                 {/* Logout button */}
                 <button

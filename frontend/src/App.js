@@ -14,6 +14,7 @@ import Notfound from "./notFound";
 import UploadAssignment from "./teacher/UploadAssignment";
 import UploadGrades from "./teacher/UploadGrades";
 import Community from "./communitycomponent/community";
+import ContactUs from "./contactcomponent/ContactUs";
 import AdminStaff from "./staffcomponent/adminstaff";
 import StudentQuestionnaires from "./staffcomponent/studentquestionnaires";
 import StaffPublic from "./staffcomponent/staffpublic";
@@ -40,6 +41,7 @@ function App() {
         <Route path="/student-dashboard/grades" element={<ViewGrades />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/community" element={<Community />} />
+        <Route path="/contact" element={<ContactUs />} />
         <Route path="*" element={<Notfound />} />
         <Route path="/teacher/upload-assignment" element={<UploadAssignment />}/>
         <Route path="/upload-grades" element={<UploadGrades />} />
